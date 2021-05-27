@@ -6,7 +6,7 @@ services:
     image: wordpress
     restart: always
     ports:
-      - 3000:80
+      - 81:80
     volumes:
       - wordpress:/var/www/html
       - ./wp-content:/var/www/html/wp-content
