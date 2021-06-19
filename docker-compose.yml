@@ -52,7 +52,6 @@ volumes:
 networks:
   seshub:
     external: true
-    name: seshub
   default:
     driver: bridge
 
