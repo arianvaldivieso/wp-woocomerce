@@ -18,6 +18,7 @@ services:
       VIRTUAL_HOST: wp.mydessk.com
       LETSENCRYPT_HOST: wp.mydessk.com
       LETSENCRYPT_EMAIL: info@mydessk.com
+      WP_DEBUG: 1
     networks:
       - seshub
       - default
@@ -29,7 +30,6 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: 123456789
-      MYSQL_RANDOM_ROOT_PASSWORD: '0'
     volumes:
       - db:/var/lib/mysql
     networks:
