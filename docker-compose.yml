@@ -16,8 +16,8 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: 123456789
       WORDPRESS_DB_NAME: wordpress
-      VIRTUAL_HOST: wp.mydessk.com
-      LETSENCRYPT_HOST: wp.mydessk.com
+      VIRTUAL_HOST: wp-test.mydessk.com
+      LETSENCRYPT_HOST: wp-test.mydessk.com
       LETSENCRYPT_EMAIL: info@mydessk.com
       WP_DEBUG: 1
     networks:
@@ -42,16 +42,46 @@ services:
     ports:
       - 3001:8080
 
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - static:/app/app/static/
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+    depends_on:
+      - app
+  letsencrypt:
+    restart: always
+    container_name: letsencrypt
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
 
 
 
 volumes:
-  db:
+  html:
+  certs:
+  vhost:
+  static:
   wordpress:
+  db:
+
+
 
 networks:
-  seshub:
-    external: true
   default:
     driver: bridge
 
