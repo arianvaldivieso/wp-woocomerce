@@ -6,10 +6,11 @@ services:
     image: wordpress
     restart: always
     ports:
-      - 81:80
+      - 80:80
     volumes:
       - wordpress:/var/www/html
       - ./wp-content:/var/www/html/wp-content
+      - ./cvs:/var/www/html/cvs
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
@@ -29,6 +30,7 @@ services:
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
+      MYSQL_ROOT_PASSWORD: 123456789
       MYSQL_PASSWORD: 123456789
     volumes:
       - db:/var/lib/mysql
